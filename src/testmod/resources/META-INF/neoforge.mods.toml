@@ -1,14 +1,14 @@
 modLoader="javafml"
 loaderVersion="[4,)"
-license="LGPLv3"
-issueTrackerURL="https://pb4.eu"
+license="${license}"
+issueTrackerURL="${issues}"
 
 [[mods]]
 modId="testmod"
 version="1.0.0"
 displayName="Test Mod"
-displayURL="https://pb4.eu"
-authors="Patbox"
+displayURL="${homepage}"
+authors="${authors}"
 description=''''''
 
 [[dependencies.testmod]]
