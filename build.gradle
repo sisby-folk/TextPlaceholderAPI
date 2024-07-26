@@ -44,10 +44,12 @@ loom {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.fl_version}"
-    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${project.fapi_version}")
-    modLocalRuntime("net.fabricmc.fabric-api:fabric-api:${project.fapi_version}")
+    mappings loom.layered {
+        it.mappings("net.fabricmc:yarn:${project.yarn_version}:v2")
+        it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.neo_yarn_version}")
+    }
+    neoForge "net.neoforged:neoforge:${project.neo_version}"
+    modImplementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.ffapi_version}"
     testmodImplementation sourceSets.main.output
 }
 
@@ -55,19 +57,19 @@ tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             version    : version,
             mc         : minecraft_version,
-            fl         : fl_version,
+            neo        : neo_version,
             id         : meta_id,
             name       : meta_name,
             homepage   : meta_homepage,
             issues     : meta_issues,
             sources    : meta_sources,
             license    : meta_license,
-            authors    : meta_authors.split(", ").collect {a -> "\"${a}\""}.toString().replace("[\"", "").replace("\"]", ""),
+            authors    : meta_authors,
             description: meta_description
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['fabric.mod.json']) {
+    filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
 }
