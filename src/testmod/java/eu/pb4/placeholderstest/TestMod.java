@@ -11,16 +11,13 @@ import eu.pb4.placeholders.api.node.LiteralNode;
 import eu.pb4.placeholders.api.node.TextNode;
 import eu.pb4.placeholders.api.parsers.*;
 import it.unimi.dsi.fastutil.Pair;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.TextArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -28,11 +25,8 @@ import java.util.Map;
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
 
-@Mod("testmod")
-public class TestMod {
-    public TestMod(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::onInitialize);
-    }
+
+public class TestMod implements ModInitializer {
 
     private static int perf(CommandContext<ServerCommandSource> context) {
         var input = context.getArgument("text", String.class);
@@ -291,7 +285,7 @@ public class TestMod {
         return 0;
     }
 
-    public void onInitialize(final FMLCommonSetupEvent even) {
+    public void onInitialize() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
             dispatcher.register(
                     literal("test").then(argument("text", TextArgumentType.text(registryAccess)).executes(TestMod::test))
