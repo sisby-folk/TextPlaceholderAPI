@@ -1,7 +1,7 @@
 //file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 plugins {
-    id "fabric-loom" version '1.7.+'
+    id "dev.architectury.loom" version '1.7.+'
     id 'maven-publish'
 }
 
