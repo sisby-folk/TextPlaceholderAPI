@@ -1,16 +1,15 @@
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAccessibility
 plugins {
     id "dev.architectury.loom" version '1.7.+'
     id 'maven-publish'
-    id "com.modrinth.minotaur" version "2.+"
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
-
+version = "$project.baseVersion+$project.branch"
+archivesBaseName = "placeholder-api"
+group = "eu.pb4"
 
 repositories {
     maven { url "https://maven.nucleoid.xyz" }
@@ -46,11 +45,11 @@ loom {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.layered {
-        it.mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
-        it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.neoforge_yarn_patch}")
+        it.mappings("net.fabricmc:yarn:${project.yarn_version}:v2")
+        it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.neo_yarn_version}")
     }
     neoForge "net.neoforged:neoforge:${project.neo_version}"
-    modImplementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.fabric_version}"
+    modImplementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.ffapi_version}"
     testmodImplementation sourceSets.main.output
 }
 
@@ -59,7 +58,6 @@ tasks.withType(ProcessResources).configureEach {
             version    : version,
             mc         : minecraft_version,
             neo        : neo_version,
-            nml        : meta_nml,
             id         : meta_id,
             name       : meta_name,
             license    : meta_license,
@@ -84,19 +82,14 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${archivesBaseName}" }
     }
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
+            from components.java
         }
     }
 }
