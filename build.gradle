@@ -64,7 +64,7 @@ tasks.withType(ProcessResources).configureEach {
             license       : license,
             authors       : authors,
             mc            : libs.versions.mc.get(),
-            fl            : libs.versions.fl.get(),
+            neo           : libs.versions.neo.get(),
             fapi          : libs.versions.fapi.get()
     ]
     inputs.properties meta

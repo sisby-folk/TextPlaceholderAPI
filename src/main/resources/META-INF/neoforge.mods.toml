@@ -4,22 +4,22 @@ license="${license}"
 issueTrackerURL="${issues}"
 
 [[mods]]
-modId="${id}"
-version="${version}"
-displayName="${name}"
-displayURL="${homepage}"
-logoFile="assets/icon.png"
-authors="${authors}"
-description='''${description}'''
+    modId="${modId}"
+    version="${version}"
+    displayName="${modName}"
+    displayURL="${homepage}"
+    logoFile="assets/icon.png"
+    authors="${authors}"
+    description='''${modDescription}'''
 
-[[dependencies.${id}]]
+[[dependencies.${modId}]]
     modId="neoforge"
     type="required"
     versionRange="[${neo},)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.${id}]]
+[[dependencies.${modId}]]
     modId="minecraft"
     type="required"
     versionRange="[${mc},)"
