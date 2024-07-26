@@ -9,11 +9,8 @@ sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
 
 version = "$project.baseVersion+$project.branch"
 archivesBaseName = "placeholder-api"
-group = "eu.pb4"
 
 repositories {
-    maven { url "https://maven.nucleoid.xyz" }
-    maven { url "https://jitpack.io" }
     maven { url "https://maven.neoforged.net/releases/" }
     maven { url "https://maven.su5ed.dev/releases" }
 }
@@ -43,35 +40,35 @@ loom {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    minecraft libs.mc
     mappings loom.layered {
-        it.mappings("net.fabricmc:yarn:${project.yarn_version}:v2")
-        it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.neo_yarn_version}")
+        it.mappings variantOf(libs.yarn) { classifier "v2" }
+        it.mappings libs.neoYarn
     }
-    neoForge "net.neoforged:neoforge:${project.neo_version}"
-    modImplementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:${project.ffapi_version}"
+
+    neoForge libs.neo
+    modImplementation libs.ffapi
+
     testmodImplementation sourceSets.main.output
 }
 
 tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            version    : version,
-            mc         : minecraft_version,
-            neo        : neo_version,
-            id         : meta_id,
-            name       : meta_name,
-            homepage   : meta_homepage,
-            issues     : meta_issues,
-            sources    : meta_sources,
-            license    : meta_license,
-            authors    : meta_authors,
-            description: meta_description
+    final Map<String, String> meta = [
+            version       : version,
+            modId         : modId,
+            modName       : modName,
+            modDescription: modDescription,
+            homepage      : homepage,
+            issues        : issues,
+            sources       : sources,
+            license       : license,
+            authors       : authors,
+            mc            : libs.versions.mc.get(),
+            fl            : libs.versions.fl.get(),
+            fapi          : libs.versions.fapi.get()
     ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
+    inputs.properties meta
+    filesMatching("META-INF/neoforge.mods.toml") { expand meta }
 }
 
 tasks.withType(JavaCompile).configureEach {
