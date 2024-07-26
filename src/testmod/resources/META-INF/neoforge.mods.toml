@@ -21,6 +21,6 @@ description=''''''
 [[dependencies.testmod]]
     modId="minecraft"
     type="required"
-    versionRange="${mc}"
+    versionRange="[${mc},)"
     ordering="NONE"
     side="BOTH"
