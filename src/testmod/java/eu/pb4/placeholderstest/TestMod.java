@@ -18,7 +18,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -30,8 +29,8 @@ import static net.minecraft.server.command.CommandManager.argument;
 
 @Mod("testmod")
 public class TestMod {
-    public TestMod(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::onInitialize);
+    public TestMod(IEventBus modBus) {
+        modBus.addListener(this::onInitialize);
     }
 
     private static int perf(CommandContext<ServerCommandSource> context) {
@@ -291,7 +290,7 @@ public class TestMod {
         return 0;
     }
 
-    public void onInitialize(final FMLCommonSetupEvent even) {
+    public void onInitialize(FMLCommonSetupEvent event) {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
             dispatcher.register(
                     literal("test").then(argument("text", TextArgumentType.text(registryAccess)).executes(TestMod::test))
